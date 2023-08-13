@@ -1,10 +1,5 @@
-"""
-6.1010 Spring '23 Lab 9: Autocomplete
-"""
-
-# NO ADDITIONAL IMPORTS!
 import doctest
-from text_tokenize import tokenize_sentences
+#from text_tokenize import tokenize_sentences
 
 import os.path
 import lab
@@ -13,7 +8,6 @@ import types
 import pickle
 
 TEST_DIRECTORY = os.path.dirname(__file__)
-
 
 class PrefixTree:
     """
@@ -122,7 +116,6 @@ class PrefixTree:
         except:
             self[key] = 1
 
-
 def word_frequencies(text):
     """
     Given a piece of text as a single string, create a prefix tree whose keys
@@ -136,7 +129,6 @@ def word_frequencies(text):
         for word in words:
             tree.increment_item(word)
     return tree
-
 
 def autocomplete_helper(tree, prefix, max_count=None):
     """
@@ -160,7 +152,6 @@ def autocomplete_helper(tree, prefix, max_count=None):
             words.add(prefix+letter)
 
     return words
-
 
 def autocomplete(tree, prefix, max_count=None):
     """
@@ -194,7 +185,6 @@ def autocomplete(tree, prefix, max_count=None):
 
     return refined_words
 
-
 def autocorrect(tree, prefix, max_count=None):
     """
     Return the list of the most-frequent words that start with prefix or that
@@ -205,15 +195,11 @@ def autocorrect(tree, prefix, max_count=None):
     """
 
     completed = autocomplete(tree, prefix, max_count)
-    # if prefix == "mon" and max_count == 20:
-    #     print(completed)
     if not isinstance(max_count, type(None)) and len(completed) == max_count:
         return completed
     suggestions = []
     suggestions.extend(del_autocorrections(tree, prefix))
-    # print('1', suggestions)
     suggestions.extend(insertion_autocorrections(tree, prefix))
-    # print('2', suggestions)
     suggestions.extend(replace_autocorrections(tree, prefix))
     suggestions.extend(transpose_autocorrections(tree, prefix))
 
@@ -230,7 +216,6 @@ def autocorrect(tree, prefix, max_count=None):
 
         freq = 0
         for elt in suggestions:
-            # print(elt)
             if tree[elt] > freq:
                 freq = tree[elt]
                 most_freq = elt
@@ -238,13 +223,9 @@ def autocorrect(tree, prefix, max_count=None):
         if most_freq not in completed:
             completed.append(most_freq)
             max_count -= 1
-        # print(max_count, most_freq)
-        suggestions.remove(most_freq)
-
-        
+        suggestions.remove(most_freq)      
 
     return completed
-
 
 def remove_duplicates(words):
     """
@@ -390,7 +371,6 @@ def word_filter(tree, pattern):
                 result.append((pattern[0]+child[0], child[1]))
     return result
 
-# you can include test cases of your own in the block below.
 if __name__ == "__main__":
     doctest.testmod()
     
